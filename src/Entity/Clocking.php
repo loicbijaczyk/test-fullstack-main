@@ -17,15 +17,18 @@ class Clocking
     #[ORM\ManyToOne(inversedBy: 'clockings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project           $clockingProject = null;
+
     #[ORM\ManyToOne(inversedBy: 'clockings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User              $clockingUser    = null;
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?DateTimeInterface $date            = null;
     #[Assert\Positive]
     #[Assert\LessThanOrEqual(value: 10)]
     #[ORM\Column(type: Types::INTEGER)]
     private ?int               $duration        = null;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
