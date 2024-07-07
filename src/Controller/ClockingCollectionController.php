@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Entity\Clocking;
+use App\Entity\ClockingProject;
+use App\Entity\Project;
+use App\Entity\User;
 use App\Form\CreateClockingType;
 use App\Repository\ClockingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +35,13 @@ class ClockingCollectionController extends
         EntityManagerInterface $entityManager,
         Request                $request,
     ) : Response {
-        $form = $this->createForm(CreateClockingType::class);
+
+
+        $clocking = new Clocking();
+        $clockingProject1 = new ClockingProject();
+        $clocking->addClockingProject($clockingProject1);
+
+        $form = $this->createForm(CreateClockingType::class, $clocking);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
