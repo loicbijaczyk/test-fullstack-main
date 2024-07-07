@@ -3,13 +3,71 @@
 
 {% block body %}
     {{ form_start(form) }}
-
-    {{ form_start(form) }}
-
-    {{ form_row(form.clockingProject) }}
     {{ form_row(form.clockingUser) }}
     {{ form_row(form.date) }}
-    {{ form_row(form.duration) }}
+
+     <ul class="clockingProject"
+    data-index="{{ form.clockingProject|length > 0 ? form.clockingProject|last.vars.name + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.clockingProject.vars.prototype)|e('html_attr') }}"
+    ></ul> 
 
     {{ form_end(form) }}
+    <button type="button" class="add_item_link btn btn-success" data-collection-holder-class="clockingProject">Add a clockingProject</button>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+$(document).ready(function(){
+
+    // add new clockingProject fields
+    document
+        .querySelectorAll('.add_item_link')
+        .forEach(btn => {
+        btn.addEventListener("click", addFormToCollection)
+    });
+
+    function addFormToCollection(e) {
+        const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+        const item = document.createElement('li');
+
+        item.innerHTML = collectionHolder
+            .dataset
+            .prototype
+            .replace(
+            /__name__/g,
+            collectionHolder.dataset.index
+            );
+
+        collectionHolder.appendChild(item);
+        addTagFormDeleteLink(item);
+
+        collectionHolder.dataset.index++;
+    };
+
+
+    //remove clockingProjects fields
+    document
+        .querySelectorAll('ul.tags li')
+        .forEach((tag) => {
+            addTagFormDeleteLink(tag)
+        })
+
+    function addTagFormDeleteLink(item) {
+    const removeFormButton = document.createElement('button');
+    removeFormButton.innerText = 'Delete this ClockingProject';
+    removeFormButton.setAttribute('class', 'btn btn-warning');
+
+    item.append(removeFormButton);
+
+    removeFormButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        // remove the li for the clockingProejct form
+        item.remove();
+    });
+}    
+})
+</script>
 {% endblock %}

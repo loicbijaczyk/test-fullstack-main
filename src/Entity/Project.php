@@ -18,34 +18,30 @@ class Project
 
     #[ORM\Column(length: 255)]
     private ?string            $address   = null;
-    #[ORM\OneToMany(targetEntity: Clocking::class, mappedBy: 'clockingProject', orphanRemoval: true)]
-    private Collection         $clockings;
+
     #[Assert\GreaterThan(propertyPath: 'dateStart')]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $dateEnd   = null;
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?DateTimeInterface $dateStart = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int               $id        = null;
+
     #[ORM\Column(length: 255)]
     private ?string            $name      = null;
 
+    #[ORM\OneToMany(targetEntity: ClockingProject::class, mappedBy: 'project')]
+    private Collection $clockingProjects;
+
     public function __construct()
     {
-        $this->clockings = new ArrayCollection();
+        $this->clockingProjects = new ArrayCollection();
     }
 
-    public function addClocking(Clocking $clocking) : static
-    {
-        if(!$this->clockings->contains($clocking)) {
-            $this->clockings->add($clocking);
-            $clocking->setClockingProject($this);
-        }
-
-        return $this;
-    }
 
     public function getAddress() : ?string
     {
@@ -55,14 +51,6 @@ class Project
     public function setAddress(?string $address) : void
     {
         $this->address = $address;
-    }
-
-    /**
-     * @return Collection<int, Clocking>
-     */
-    public function getClockings() : Collection
-    {
-        return $this->clockings;
     }
 
     public function getDateEnd() : ?DateTimeInterface
@@ -102,15 +90,39 @@ class Project
         return $this;
     }
 
-    public function removeClocking(Clocking $clocking) : static
+
+    /**
+     * @return Collection<int, ClockingProject>
+     */
+    public function getClockingProject(): Collection
     {
-        if($this->clockings->removeElement($clocking)) {
+        return $this->clockingProjects;
+    }
+
+    public function addClockingProject(ClockingProject $clockingProject): static
+    {
+        if (!$this->clockingProjects->contains($clockingProject)) {
+            $this->clockingProjects->add($clockingProject);
+            $clockingProject->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClockingProject(ClockingProject $clockingProject): static
+    {
+        if ($this->clockingProjects->removeElement($clockingProject)) {
             // set the owning side to null (unless already changed)
-            if($clocking->getClockingProject() === $this) {
-                $clocking->setClockingProject(null);
+            if ($clockingProject->getProject() === $this) {
+                $clockingProject->setProject(null);
             }
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

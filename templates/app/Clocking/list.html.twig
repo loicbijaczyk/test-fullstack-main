@@ -16,15 +16,17 @@
         </thead>
         <tbody>
             {% for clocking in clockings %}
+            {% for project in clocking.ClockingProject %}
                 <tr>
                     <td>{{ clocking.date|date }}</td>
-                    <td>{{ clocking.duration }}</td>
-                    <td>{{ clocking.clockingProject.name }}</td>
+                    <td>{{ project.duration }}</td>
+                    <td>{{ project.project.name }}</td>
                     <td>{{ clocking.clockingUser.lastName }} {{ clocking.clockingUser.firstName }}</td>
                     <td>
                         <a href="{{ path('app_Clocking_delete', {id: clocking.id}) }}">Supprimer</a>
                     </td>
                 </tr>
+            {% endfor %}
             {% endfor %}
         </tbody>
     </table>
