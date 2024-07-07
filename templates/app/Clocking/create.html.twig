@@ -12,7 +12,7 @@
     ></ul> 
 
     {{ form_end(form) }}
-    <button type="button" class="add_item_link btn btn-success" data-collection-holder-class="clockingProject">Add a clockingProject</button>
+    <button type="button" class="add_item_link btn btn-success" data-collection-holder-class="clockingProject">{{ 'entity.Project.AddClockingProject'|trans}}</button>
 
 {% endblock %}
 
@@ -57,7 +57,7 @@ $(document).ready(function(){
 
     function addTagFormDeleteLink(item) {
     const removeFormButton = document.createElement('button');
-    removeFormButton.innerText = 'Delete this ClockingProject';
+    removeFormButton.innerText = '{{'entity.Project.DeleteClockingProjectname'|trans}}';
     removeFormButton.setAttribute('class', 'btn btn-warning');
 
     item.append(removeFormButton);
