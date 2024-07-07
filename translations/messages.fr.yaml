@@ -9,6 +9,8 @@ entity:
     dateEnd: "Date de clôture"
     dateStart: "Date d'ouverture"
     name: "Nom"
+    DeleteClockingProjectname: 'Supprimer ce chantier'
+    AddClockingProject : 'Ajouter un nouveau projet'
   User:
     firstName: "Prénom"
     lastName: "Nom"
