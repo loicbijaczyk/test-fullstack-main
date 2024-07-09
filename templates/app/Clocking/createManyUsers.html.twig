@@ -3,12 +3,12 @@
 
 {% block body %}
     {{ form_start(form) }}
-    {{ form_row(form.clockingUser) }}
+    {{ form_row(form.project) }}
     {{ form_row(form.date) }}
 
      <ul class="clockingProject"
-    data-index="{{ form.clockingProject|length > 0 ? form.clockingProject|last.vars.name + 1 : 0 }}"
-    data-prototype="{{ form_widget(form.clockingProject.vars.prototype)|e('html_attr') }}"
+    data-index="{{ form.clockingUser|length > 0 ? form.clockingUser|last.vars.name + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.clockingUser.vars.prototype)|e('html_attr') }}"
     ></ul> 
 
     {{ form_end(form) }}

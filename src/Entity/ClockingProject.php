@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ClockingProjectRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClockingProjectRepository::class)]
@@ -19,7 +19,7 @@ class ClockingProject
     #[ORM\ManyToOne(inversedBy: 'project')]
     private ?Clocking $clocking = null;
 
-    #[ORM\ManyToOne(inversedBy: 'clockProjects')]
+    #[ORM\ManyToOne(inversedBy: 'clockingProjects')]
     private ?Project $project = null;
 
     #[Assert\Positive]
@@ -66,5 +66,10 @@ class ClockingProject
         $this->duration = $duration;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getProject()->getName();
     }
 }

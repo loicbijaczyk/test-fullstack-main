@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Clocking;
 use App\Entity\ClockingProject;
 use App\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -10,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ClockingProjectType extends AbstractType
+class ClockingOneUserType extends AbstractType
 {
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
