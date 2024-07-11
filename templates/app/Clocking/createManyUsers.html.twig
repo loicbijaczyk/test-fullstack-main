@@ -31,7 +31,7 @@ $(document).ready(function(){
     function addFormToCollection(e) {
         const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
-        const item = document.createElement('li');
+        const item = document.createElement('div');
 
         item.innerHTML = collectionHolder
             .dataset

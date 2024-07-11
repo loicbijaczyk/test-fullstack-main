@@ -22,6 +22,7 @@ class ClockingManyUsersType extends AbstractType
         array                $options
     ) : void {
         
+       
         $builder->add('user', EntityType::class, [
             'class'        => User::class,
             'choice_label' => static function(
@@ -31,12 +32,15 @@ class ClockingManyUsersType extends AbstractType
                     ? null
                     : $choice->getFirstName() . ' ' . $choice->getLastName();
             },
-            'label'        => 'entity.Clocking.clockingUser',
+            'label'         => 'entity.Clocking.clockingUser',
+            'required'      => true,
+            'mapped'        => false
         ]);
 
         $builder->add('duration', IntegerType::class, [
-            'label' => 'entity.Clocking.duration',
-            'mapped' => false
+            'label'         => 'entity.Clocking.duration',
+            'required'      => true,
+            'mapped'        => false
         ]);
         
     }
@@ -54,4 +58,5 @@ class ClockingManyUsersType extends AbstractType
             ]
         );
     }
+
 }

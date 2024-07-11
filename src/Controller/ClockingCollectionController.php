@@ -13,7 +13,6 @@ use App\Form\CreateClockingOneUserType;
 use App\Repository\ClockingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Clock\Clock;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -38,28 +37,16 @@ class ClockingCollectionController extends
         Request                $request,
     ) : Response {
 
-        // $user = new User();
+        // initiate data to show the fields in the form
         $clocking = new Clocking();
         $clockingProject = new ClockingProject();
         $clocking->addClockingProject($clockingProject);
-        // $user->addClocking($clocking);
 
         $form = $this->createForm(CreateClockingOneUserType::class, $clocking);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
             $clocking = $form->getData();
-            // $date = $form->get('date')->getData();
-// dd($clocking);
-// $userDatabase = $entityManager->getRepository(User::class)->findBy(['firstName'=> $user->getFirstName(), 'lastName'=> $user->getLastName()]);
-// if($userDatabase == null) {
-//     $userDatabase = $entityManager->getRepository(User::class)->find(1);
-// }
-// foreach ($user->getclockings() as $clocking){
-// $clocking->setDate($date);
-// $entityManager->persist($clocking);
-// }
-
             $entityManager->persist($clocking);
             $entityManager->flush();
 
@@ -88,20 +75,40 @@ class ClockingCollectionController extends
         Request                $request,
     ) : Response {
 
-
-        // $clockingProject = new ClockingProject();
+        // initiate data to show the fields in the form
         $clocking = new Clocking();
+        $user = new User();
+        $clocking->setClockingUser($user);
+
+        //let to inject all projects in the form, because no access of projecys in colcking
         $projects = $entityManager->getRepository(Project::class)->findAll();
-        // dd($projects);
-        // $clockingProject->setClocking($clocking);
 
         $form = $this->createForm(CreateClockingManyUsersType::class, $clocking, ['projects' => $projects]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $clocking = $form->getData();
+            $project = $form->get('project')->getData();
+            $date = $form->get('date')->getData();
 
-            $entityManager->persist($clocking);
+            //As the fields are mapped = false, they cannot be retreive
+            // in the $form->getData(). So i get them in the $request
+            $request = $request->request->all();
+            $collections = $request['create_clocking_many_users']['clockingUser'];
+
+            foreach($collections as $collection){
+                $duration = (int)$collection['duration'];
+                $user = $entityManager->getRepository(User::class)->find($collection['user']);
+                $clocking = new Clocking();
+                $clocking->setDate($date);
+                $clocking->setClockingUser($user);
+                $clockingProject = new ClockingProject();
+                $clockingProject->setProject($project);
+                $clockingProject->setDuration($duration);
+                $clockingProject->setClocking($clocking);
+                $entityManager->persist($clocking);
+                $entityManager->persist($clockingProject);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_Clocking_list');

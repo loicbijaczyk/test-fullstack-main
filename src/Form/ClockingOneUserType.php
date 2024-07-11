@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Clocking;
 use App\Entity\ClockingProject;
 use App\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

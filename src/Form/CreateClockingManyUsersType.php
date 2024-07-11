@@ -3,21 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Clocking;
-use App\Entity\ClockingProject;
 use App\Entity\Project;
-use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder as ORMQueryBuilder;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Choice;
 
 class CreateClockingManyUsersType extends
     AbstractType
@@ -55,6 +48,7 @@ class CreateClockingManyUsersType extends
             'by_reference'  => false,
             'allow_add'     => true,
             'allow_delete'  => true,
+            'mapped'        => false
 
         ]);
 
