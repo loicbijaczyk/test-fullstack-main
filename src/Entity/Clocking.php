@@ -10,15 +10,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClockingRepository::class)]
 class Clocking
 {
 
-    #[ORM\ManyToOne(inversedBy: 'clockings')]
+    #[ORM\ManyToOne(targetEntity:User::class, inversedBy: 'clockings', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User              $clockingUser    = null;
+    private ?User              $clockingUser;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?DateTimeInterface $date            = null;
@@ -36,19 +35,6 @@ class Clocking
         $this->clockingProjects = new ArrayCollection();
     }
 
-
-    public function getClockingUser() : ?User
-    {
-        return $this->clockingUser;
-    }
-
-    public function setClockingUser(?User $clockingUser) : static
-    {
-        $this->clockingUser = $clockingUser;
-
-        return $this;
-    }
-
     public function getDate() : ?DateTimeInterface
     {
         return $this->date;
@@ -62,6 +48,18 @@ class Clocking
     public function getId() : ?int
     {
         return $this->id;
+    }
+
+    public function getClockingUser() : ?User
+    {
+        return $this->clockingUser;
+    }
+
+    public function setClockingUser(?User $clockingUser) : static
+    {
+        $this->clockingUser = $clockingUser;
+
+        return $this;
     }
 
     /**
@@ -93,4 +91,5 @@ class Clocking
 
         return $this;
     }
+   
 }

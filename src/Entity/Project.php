@@ -42,7 +42,6 @@ class Project
         $this->clockingProjects = new ArrayCollection();
     }
 
-
     public function getAddress() : ?string
     {
         return $this->address;
@@ -125,4 +124,5 @@ class Project
     {
         return $this->getName();
     }
+    
 }

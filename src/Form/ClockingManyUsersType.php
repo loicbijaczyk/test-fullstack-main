@@ -2,15 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\ClockingProject;
-use App\Entity\Project;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ClockingProjectType extends AbstractType
+class ClockingManyUsersType extends AbstractType
 {
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -23,13 +22,25 @@ class ClockingProjectType extends AbstractType
         array                $options
     ) : void {
         
-        $builder->add('project', EntityType::class, [
-            'class'        => Project::class,
-            'label'        => 'entity.Clocking.clockingProject',
+       
+        $builder->add('user', EntityType::class, [
+            'class'        => User::class,
+            'choice_label' => static function(
+                ?User $choice
+            ) : ?string {
+                return $choice === null
+                    ? null
+                    : $choice->getFirstName() . ' ' . $choice->getLastName();
+            },
+            'label'         => 'entity.Clocking.clockingUser',
+            'required'      => true,
+            'mapped'        => false
         ]);
 
         $builder->add('duration', IntegerType::class, [
-            'label' => 'entity.Clocking.duration',
+            'label'         => 'entity.Clocking.duration',
+            'required'      => true,
+            'mapped'        => false
         ]);
         
     }
@@ -43,8 +54,9 @@ class ClockingProjectType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => ClockingProject::class,
+                'data_class' => User::class,
             ]
         );
     }
+
 }

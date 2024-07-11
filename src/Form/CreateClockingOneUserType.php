@@ -3,18 +3,16 @@
 namespace App\Form;
 
 use App\Entity\Clocking;
-use App\Entity\Project;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreateClockingType extends
+class CreateClockingOneUserType extends
     AbstractType
 {
 
@@ -44,9 +42,9 @@ class CreateClockingType extends
         $builder->add('date', DateType::class, [
             'label' => 'entity.Clocking.date',
         ]);
-
+        
         $builder->add('clockingProject', CollectionType::class, [
-            'entry_type'    => ClockingProjectType::class,
+            'entry_type'    => ClockingOneUserType::class,
             'prototype'     => true,
             'entry_options' => ['label' => false],
             'by_reference' => false,
@@ -55,7 +53,6 @@ class CreateClockingType extends
 
         ]);
 
-       
         $builder->add('submit', SubmitType::class, [
             'label' => 'Créer',
         ]);

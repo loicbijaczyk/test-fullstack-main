@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div>
-        <a href="{{ path('app_Clocking_create') }}">Créer</a>
-        
+    <div class="d-flex justify-content-between bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+            <a class="btn btn-success p-2 " href="{{ path('app_Clocking_One_User_create') }}">{{ "entity.Clocking.addOneUser"|trans }}</a>
+        </div>
+        <div class="p-2 bd-highlight">
+            <a class="btn btn-primary text-right" href="{{ path('app_Clocking_Many_Users_create') }}">{{ "entity.Clocking.addManyUsers"|trans }}</a>
+        </div>
     </div>
     <table class="table table-striped">
         <thead>
@@ -17,17 +21,17 @@
         </thead>
         <tbody>
             {% for clocking in clockings %}
-            {% for project in clocking.ClockingProject %}
-                <tr>
-                    <td>{{ clocking.date|date }}</td>
-                    <td>{{ project.duration }}</td>
-                    <td>{{ project.project.name }}</td>
-                    <td>{{ clocking.clockingUser.lastName }} {{ clocking.clockingUser.firstName }}</td>
-                    <td>
-                        <a href="{{ path('app_Clocking_delete', {id: clocking.id}) }}">Supprimer</a>
-                    </td>
-                </tr>
-            {% endfor %}
+                {% for project in clocking.ClockingProject %}
+                    <tr>
+                        <td>{{ clocking.date|date }}</td>
+                        <td>{{ project.duration }}</td>
+                        <td>{{ project.project.name }}</td>
+                        <td>{{ clocking.clockingUser.lastName }} {{ clocking.clockingUser.firstName }}</td>
+                        <td>
+                            <a href="{{ path('app_Clocking_delete', {id: clocking.id}) }}">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
             {% endfor %}
         </tbody>
     </table>
